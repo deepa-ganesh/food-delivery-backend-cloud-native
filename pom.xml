@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.deepaganesh.fooddelivery</groupId>
+    <artifactId>food-delivery-management</artifactId>
+    <version>1.0.0</version>
+    <name>Food Delivery Management Monorepo</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>common</module>
+        <module>order-service</module>
+        <module>restaurant-service</module>
+        <module>delivery-service</module>
+        <module>tracking-service</module>
+        <module>notification-service</module>
+        <module>gateway-service</module>
+        <module>discovery-service</module>
+        <module>config-server</module>
+    </modules>
+
+    <properties>
+        <java.version>17</java.version>
+        <spring.boot.verison>3.2.1</spring.boot.verison>
+        <spring.cloud.version>2023.0.2</spring.cloud.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.verison}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: order-service
+  config:
+    import: optional:configserver:http://localhost:8888
+    #uri: http://localhost:8888 # Optional: you can use uri instead
+
+# Optional: To see what's loaded from config-server
+logging:
+  level:
+    org.springframework.cloud.config: DEBUG

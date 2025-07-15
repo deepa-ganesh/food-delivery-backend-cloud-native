@@ -1,0 +1,14 @@
+server:
+  port: 8888
+
+spring:
+  cloud:
+    config:
+      server:
+#        git: # Use this to fetch files from git repository
+#          uri: https://github.com/..
+#          default-label: main
+        native:
+          search-locations: file:///Users/deepa/My Projects/food-delivery-management/config-files
+  profiles:
+    active: native

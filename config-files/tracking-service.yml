@@ -1,0 +1,30 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: tracking-service
+  datasource:
+    url: jdbc:h2:mem:trackingdb
+    driver: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  kafka:
+    bootstrap-server: localhost:9092
+    consumer:
+      group-id: tracking-group
+      auto-offset-reset: earliest
+
+kafka:
+  topic:
+    delivery-update: delivery.update
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
