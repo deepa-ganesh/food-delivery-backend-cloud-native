@@ -1,7 +1,9 @@
 package io.github.deepaganesh.fooddelivery.order.service.impl;
 
+import io.github.deepaganesh.fooddelivery.common.dto.RestaurantDTO;
 import io.github.deepaganesh.fooddelivery.common.dto.kafka.OrderCreatedEvent;
 import io.github.deepaganesh.fooddelivery.common.dto.OrderStatus;
+import io.github.deepaganesh.fooddelivery.order.client.RestaurantAPIClient;
 import io.github.deepaganesh.fooddelivery.order.dto.OrderRequest;
 import io.github.deepaganesh.fooddelivery.order.entity.Order;
 import io.github.deepaganesh.fooddelivery.order.entity.OrderItem;
@@ -32,8 +34,17 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private RedisCacheService redisCacheService;
 
+    @Autowired
+    private RestaurantAPIClient restaurantAPIClient;
+
     @Override
     public Order createOrder(OrderRequest orderRequest) {
+        RestaurantDTO restaurant = restaurantAPIClient.getRestaurantById(orderRequest.getRestaurantId());
+
+        if (!restaurant.getActive()) {
+            throw new IllegalArgumentException("Restaurant is not active");
+        }
+
         Order order = new Order();
         order.setCustomerId(orderRequest.getCustomerId());
         order.setRestaurantId(orderRequest.getRestaurantId());

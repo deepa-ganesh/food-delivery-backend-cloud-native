@@ -23,10 +23,6 @@ spring:
       group-id: delivery-group
       auto-offset-reset: earliest
 
-kafka:
-  topic:
-    order-created: order.created
-
 eureka:
   client:
     service-url:

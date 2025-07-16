@@ -1,8 +1,8 @@
 package io.github.deepaganesh.fooddelivery.restaurant.service.impl;
 
+import io.github.deepaganesh.fooddelivery.common.dto.RestaurantDTO;
 import io.github.deepaganesh.fooddelivery.common.exception.ResourceNotFoundException;
 import io.github.deepaganesh.fooddelivery.restaurant.common.RestaurantMapper;
-import io.github.deepaganesh.fooddelivery.restaurant.dto.RestaurantDTO;
 import io.github.deepaganesh.fooddelivery.restaurant.entity.Restaurant;
 import io.github.deepaganesh.fooddelivery.restaurant.repository.RestaurantRepository;
 import io.github.deepaganesh.fooddelivery.restaurant.service.RestaurantService;

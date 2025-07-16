@@ -44,10 +44,6 @@ redis:
     order: 600 # TTL in seconds (10 minutes)
   mode: standalone
 
-kafka:
-  topic:
-    order-created: order.created
-
 jwt:
   secret: my-secret-key
   expirationMs: 86400000 # 24 hours in milliseconds

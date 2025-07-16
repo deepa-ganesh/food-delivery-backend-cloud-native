@@ -1,6 +1,6 @@
 package io.github.deepaganesh.fooddelivery.restaurant.common;
 
-import io.github.deepaganesh.fooddelivery.restaurant.dto.RestaurantDTO;
+import io.github.deepaganesh.fooddelivery.common.dto.RestaurantDTO;
 import io.github.deepaganesh.fooddelivery.restaurant.entity.Restaurant;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

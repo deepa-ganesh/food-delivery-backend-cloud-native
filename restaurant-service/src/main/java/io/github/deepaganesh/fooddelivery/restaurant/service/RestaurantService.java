@@ -1,6 +1,6 @@
 package io.github.deepaganesh.fooddelivery.restaurant.service;
 
-import io.github.deepaganesh.fooddelivery.restaurant.dto.RestaurantDTO;
+import io.github.deepaganesh.fooddelivery.common.dto.RestaurantDTO;
 
 import java.util.List;
 

@@ -1,0 +1,6 @@
+kafka:
+  topic:
+    order-created: order.created
+    delivery-status-updated: delivery.status.updated
+    restaurant-menu-updated: restaurant.menu.updated
+    order-cancelled: order.cancelled

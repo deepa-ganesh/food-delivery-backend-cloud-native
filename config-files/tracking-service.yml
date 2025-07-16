@@ -19,11 +19,6 @@ spring:
       group-id: tracking-group
       auto-offset-reset: earliest
 
-kafka:
-  topic:
-    delivery-update: delivery.update
-
-
 eureka:
   client:
     service-url:

@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificationConsumer {
 
-    @KafkaListener(topics = "${kafka.topic.order-created}", groupId = "notification-group", containerFactory = "orderCreatedKafkaListenerFactory")
+    @KafkaListener(topics = "${kafka.topic.order-created}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "orderCreatedKafkaListenerFactory")
     public void handleOrderCreatedEvent(OrderCreatedEvent event) {
         log.info("Order Placed: Sending notification for orderId: {}", event.getOrderId());
         // Simulate notification (email, SMS, etc.)
     }
 
-    @KafkaListener(topics = "${kafka.topic.delivery-status-updated}", groupId = "notification-group", containerFactory = "deliveryStatusKafkaListenerFactory")
+    @KafkaListener(topics = "${kafka.topic.delivery-status-updated}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "deliveryStatusKafkaListenerFactory")
     public void handleDeliveryStatusUpdated(DeliveryStatusUpdatedEvent event) {
         log.info("Delivery status updated: orderId={}, status={}", event.getOrderId(), event.getStatus());
         // Simulate notification

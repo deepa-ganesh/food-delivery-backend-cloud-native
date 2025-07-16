@@ -15,7 +15,7 @@ public class KafkaConsumer {
     @Autowired
     private TrackingService trackingService;
 
-    @KafkaListener(topics = "${kafka.topic.delivery-update}", groupId = "delivery-update", containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(topics = "${kafka.topic.delivery.status.updated}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "kafkaListenerContainerFactory")
     public void handleStatusUpdate(DeliveryStatusUpdatedEvent event) {
         TrackingInfoDTO dto = new TrackingInfoDTO();
         dto.setOrderId(event.getOrderId());

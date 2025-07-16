@@ -1,4 +1,4 @@
-package io.github.deepaganesh.fooddelivery.restaurant.dto;
+package io.github.deepaganesh.fooddelivery.common.dto;
 
 import lombok.Data;
 

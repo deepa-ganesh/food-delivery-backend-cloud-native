@@ -5,10 +5,7 @@ spring:
   cloud:
     config:
       server:
-#        git: # Use this to fetch files from git repository
-#          uri: https://github.com/..
-#          default-label: main
-        native:
-          search-locations: file:///Users/deepa/My Projects/food-delivery-management/config-files
-  profiles:
-    active: native
+        git:
+          uri: https://github.com/deepa-ganesh/food-delivery-backend-cloud-native.git
+          search-paths: config-files
+          default-label: main

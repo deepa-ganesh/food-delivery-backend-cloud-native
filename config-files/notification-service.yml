@@ -10,11 +10,6 @@ spring:
       group-id: notification-group
       auto-offset-reset: earliest
 
-kafka:
-  topic:
-    order-created: order.created
-    delivery-status-updated: delivery.status.updated
-
 eureka:
   client:
     service-url:
