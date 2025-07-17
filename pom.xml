@@ -34,6 +34,7 @@
         <spring.doc.verison>2.5.0</spring.doc.verison>
         <apache.commons.version>2.12.0</apache.commons.version>
         <mapstruct.version>1.6.3</mapstruct.version>
+        <logstash.verison>7.4</logstash.verison>
     </properties>
 
     <dependencyManagement>

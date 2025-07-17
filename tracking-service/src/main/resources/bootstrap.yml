@@ -1,5 +1,5 @@
 spring:
   application:
-    name: restaurant-service
+    name: tracking-service
   config:
     import: optional:configserver:http://localhost:8888

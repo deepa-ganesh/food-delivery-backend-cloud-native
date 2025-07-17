@@ -1,0 +1,8 @@
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    ports:
+      - "4318:4318"   # HTTP endpoint for OTLP traces
+      - "55681:55681"
+    volumes:
+      - ./otelcol/otel-collector-config.yml:/etc/otelcol/config.yaml

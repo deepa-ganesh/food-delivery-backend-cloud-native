@@ -96,6 +96,12 @@
         </dependency>
 
         <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash.verison}</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.github.deepaganesh.fooddelivery</groupId>
             <artifactId>common</artifactId>
             <version>1.0.0</version>

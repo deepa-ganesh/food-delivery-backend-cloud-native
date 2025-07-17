@@ -4,23 +4,37 @@ server:
 spring:
   application:
     name: restaurant-service
+
   datasource:
     url: jdbc:h2:mem:restaurantdb
     driver: org.h2.Driver
     username: sa
     password:
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
   h2:
     console:
       enabled: true
       path: /h2-console
+
   kafka:
     bootstrap-server: localhost:9092
 
+# Eureka Client for Service Discovery
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+# OpenTelemetry for   log tracing
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces
