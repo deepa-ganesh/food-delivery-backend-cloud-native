@@ -27,7 +27,7 @@ public class RedisProperties {
             private int maxActive = 10;
             private int maxIdle = 10;
             private int minIdle = 2;
-            private long maxWait = -1L;
+            private long maxWait = 1000;
         }
     }
 

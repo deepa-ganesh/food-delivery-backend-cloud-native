@@ -15,7 +15,7 @@ public class RedisCacheService {
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
 
-    @Value("${redis.ttl.order:60")
+    @Value("${redis.ttl.order:60}")
     private long ttlSeconds;
 
     public void addToCache(String key, Object value) {

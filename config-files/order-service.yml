@@ -33,7 +33,7 @@ spring:
         max-active: 10
         max-idle: 10
         min-idle: 2
-        max-wait: -1ms
+        max-wait: 1000
     sentinel:              # Having this will not require to write code, Spring will autoconfigure sentinel factory
       master: mymaster     # Should match the name used in sentinel.conf
       nodes: localhost:26379,localhost:26380,localhost:26381

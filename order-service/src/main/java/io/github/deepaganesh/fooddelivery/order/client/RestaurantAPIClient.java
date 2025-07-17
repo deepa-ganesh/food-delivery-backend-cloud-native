@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface RestaurantAPIClient {
 
     @GetMapping("/id")
-    RestaurantDTO getRestaurantById(@PathVariable Long id);
+    RestaurantDTO getRestaurantById(@PathVariable("id") Long id);
 }
