@@ -74,6 +74,23 @@ mvn spring-boot:run
 - Role-based access control (`@PreAuthorize`)
 - Secured endpoints with Spring Security
 
+## Rate Limiting
+
+This project implements two types of rate limiting using Redis:
+
+1. Spring Cloud Gateway – Built-in Redis Rate Limiter
+   - Location: gateway-service
+   - Description: Uses Spring Cloud Gateway’s built-in RedisRateLimiter to apply rate limits at the gateway layer, ensuring all incoming traffic is controlled before reaching internal microservices.
+2. Custom Redis Rate Limiter
+   - Location: order-service
+   - Description: Implements a simple token bucket rate limiter using Redis to track request counts per IP/user over a time window.
+
+Run Redis:
+
+```bash
+docker run --name redis -p 6379:6379 redis
+```
+
 ## Future Enhancements
 
 - Role-based UI with React/Angular frontend

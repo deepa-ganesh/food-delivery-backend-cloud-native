@@ -52,3 +52,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+app:
+  rate:
+    limit:
+      request: 5
+      windowSeconds: 60
