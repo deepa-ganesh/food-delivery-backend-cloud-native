@@ -41,7 +41,7 @@
         </root>
     </springProfile>
 
-    <springProfile name="local">
+    <springProfile name="native">
         <!-- Console Appender (Readable format for IntelliJ) -->
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>

@@ -68,23 +68,37 @@ Build the entire project:
   mvn clean install
 ```
 
-Run any service individually:
+## Running locally
+
+1. Prepare infra - Bring the required setup via Docker
+
+```bash
+  docker compose -f docker-compose.local.infra.yml up --build -d
+```
+
+2. Run the services one by one. For example, to run **order-service**
 
 ```bash
   cd order-service
-  mvn spring-boot:run
+  mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 ## Running with Docker Compose
 
-Start all services with ELK and OpenTelemetry collector:
+Start all services with all infra:
 
 ```bash
-  docker compose --env-file .env.docker -f docker-compose.yml up --build -d
+  docker compose -f docker-compose.local.infra.yml --env-file .env.docker -f docker-compose.main.yml up --build -d
 ```
 Stop all services:
+
 ```bash
-  docker compose down -v --remove-orphans   
+  docker compose -f docker-compose.local.infra.yml --env-file .env.docker -f docker-compose.main.yml down -v --remove-orphans
+```
+To check logs of a particular service:
+
+```bash
+  docker compose -f docker-compose.local.infra.yml -f docker-compose.main.yml logs -f gateway-service
 ```
 
 > Note: Ensure Docker is running and ports mentioned in the docker-compose.yml are available.

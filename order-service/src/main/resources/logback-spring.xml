@@ -3,43 +3,90 @@
     <!-- Enable Spring Boot profile support -->
     <springProperty name="APP_NAME" source="spring.application.name" defaultValue="app" />
 
+    <!-- Default Spring Boot setup -->
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-    <!-- Encoder for structured JSON output -->
-    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>logstash:5001</destination> <!-- Logstash port -->
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp>
-                    <fieldName>timestamp</fieldName>
-                </timestamp>
-                <pattern>
+    <!-- Docker-specific logging -->
+    <springProfile name="docker">
+        <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>logstash:5001</destination> <!-- Logstash port -->
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp>
+                        <fieldName>timestamp</fieldName>
+                    </timestamp>
                     <pattern>
-                        {
-                        "log.level": "%level",
-                        "trace.id": "%X{traceId:-}",
-                        "span.id": "%X{spanId:-}",
-                        "thread": "%thread",
-                        "logger": "%logger",
-                        "message": "%message"
-                        }
+                        <pattern>
+                            {
+                            "timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}",
+                            "level": "%level",
+                            "app": "${APP_NAME}",
+                            "trace.id": "%X{traceId:-}",
+                            "span.id": "%X{spanId:-}",
+                            "thread": "%thread",
+                            "logger": "%logger",
+                            "message": "%message"
+                            }
+                        </pattern>
                     </pattern>
+                    <stackTrace />
+                </providers>
+                <immediateFlush>true</immediateFlush>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="LOGSTASH" />
+        </root>
+    </springProfile>
+
+    <springProfile name="local">
+        <!-- Console Appender (Readable format for IntelliJ) -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
                 </pattern>
-                <stackTrace />
-            </providers>
-        </encoder>
-    </appender>
+                <immediateFlush>true</immediateFlush>
+            </encoder>
+        </appender>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>
-                %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg
-            </pattern>
-        </encoder>
-    </appender>
+        <!-- Logstash Appender (JSON logs for ELK stack) -->
+        <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>localhost:5001</destination>
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp>
+                        <fieldName>timestamp</fieldName>
+                    </timestamp>
+                    <pattern>
+                        <pattern>
+                            {
+                            "timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}",
+                            "level": "%level",
+                            "app": "${APP_NAME}",
+                            "trace.id": "%X{traceId:-}",
+                            "span.id": "%X{spanId:-}",
+                            "thread": "%thread",
+                            "logger": "%logger",
+                            "message": "%message"
+                            }
+                        </pattern>
+                    </pattern>
+                    <stackTrace />
+                </providers>
+            </encoder>
+        </appender>
 
-    <!-- Optional: File appender -->
+        <!-- Root Logger with both -->
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="LOGSTASH" />
+        </root>
+    </springProfile>
+
+    <!-- Optional: file logging (disabled by default) -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/${APP_NAME}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -48,9 +95,7 @@
         </rollingPolicy>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
-                <timestamp>
-                    <fieldName>timestamp</fieldName>
-                </timestamp>
+                <timestamp><fieldName>timestamp</fieldName></timestamp>
                 <pattern>
                     <pattern>
                         {
@@ -65,13 +110,8 @@
                 </pattern>
                 <stackTrace />
             </providers>
+            <immediateFlush>true</immediateFlush>
         </encoder>
     </appender>
 
-
-    <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="LOGSTASH"/>
-        <!-- <appender-ref ref="FILE" /> -->
-    </root>
 </configuration>

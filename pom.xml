@@ -10,15 +10,15 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>common</module>
+        <module>discovery-service</module>
+        <module>config-server</module>
+        <module>gateway-service</module>
         <module>order-service</module>
         <module>restaurant-service</module>
         <module>delivery-service</module>
         <module>tracking-service</module>
         <module>notification-service</module>
-        <module>gateway-service</module>
-        <module>discovery-service</module>
-        <module>config-server</module>
+        <module>common</module>
     </modules>
 
     <properties>
