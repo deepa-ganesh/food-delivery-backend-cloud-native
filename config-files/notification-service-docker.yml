@@ -1,0 +1,11 @@
+spring:
+  kafka:
+    bootstrap-server: ${KAFKA_BROKER}
+    consumer:
+      group-id: notification-group
+      auto-offset-reset: earliest
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}

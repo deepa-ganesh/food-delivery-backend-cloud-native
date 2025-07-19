@@ -1,0 +1,44 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/orders/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                # 5 requests/sec with burst capacity of 10
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
+                keyResolver: "#{@ipKeyResolver}"
+        - id: restaurant-service
+          uri: lb://restaurant-service
+          predicates:
+              - Path=/restaurants/**
+        - id: delivery-service
+          uri: lb://delivery-service
+          predicates:
+            - Path=/deliveries/**
+        - id: tracking-service
+          uri: lb://tracking-service
+          predicates:
+            - Path=/track/**
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/notifications/**
+
+  redis:
+    host: localhost
+    port: 6379
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

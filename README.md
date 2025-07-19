@@ -30,43 +30,80 @@ A robust cloud-native food delivery backend system built using Spring Boot micro
 | `gateway-service`   | API Gateway and route handler              |
 | `common`            | Shared DTOs, exceptions, and utilities     |
 
-## Running with Docker Compose
+## Environment Strategy
 
-Start all services with ELK and OpenTelemetry collector:
+This project currently supports two environments:
 
-```bash
-docker-compose -f docker-compose.logging.yml -f docker-compose.otlp.yml up --build
-```
+- **Local Development** (`local` / default profile): Uses in-memory H2 database, runs services via `mvn spring-boot:run`, and relies on local Git configs.
+- **Docker Environment** (`docker` profile): Uses Docker Compose to spin up services with PostgreSQL, Redis, Kafka, OpenTelemetry Collector, and ELK stack.
 
-> Note: Ensure Docker is running and ports 5601, 9200, 5001, and 4318 are available.
+The environment-specific configuration is managed via Spring Profiles (`spring.profiles.active`) and centralized in the `config-files/` repository.
+
+> **Note**: The current setup is designed to be easily extended to support additional environments such as `dev`, `qa`, `uat`, and `prod` using profile-specific YAMLs and externalized secrets/configs via vaults or CI/CD pipelines.
+
+## Local vs Docker Environment
+
+| Component             | Local Development                               | Docker Environment                                 |
+|-----------------------|--------------------------------------------------|---------------------------------------------------|
+| `Active Profile`      | `local` or default                               | `docker`                                          |
+| `Database`            | H2 (in-memory, no setup needed)                 | PostgreSQL (`postgres` container)                |
+| `Config Server`       | Local Git folder or manual URL                  | `config-server` with volume-mapped config repo   |
+| `Discovery Server`    | Eureka at `http://localhost:8761`               | `discovery-service` container                    |
+| `Redis`               | Optional / local Redis if needed                | `redis:7` container                               |
+| `Kafka`               | Optional / local Kafka                          | `kafka` container                                 |
+| `OpenTelemetry`       | Optional / Zipkin or none                       | `otel-collector:4318` with OTLP export           |
+| `Config Import`       | `http://localhost:8888`                         | `http://config-server:8888`                      |
+| `Env Variables`       | Handled by IntelliJ or shell                   | Provided via `.env` and `env_file:` in Compose   |
+| `Startup Command`     | `mvn spring-boot:run` from module               | `docker-compose up --build`                      |
+| `Build Tool`          | Maven build (`mvn clean install`)              | Multi-stage Docker build (`Dockerfile`) per module |
+| `Logging`             | Console/File output                             | Centralized via Logstash (`localhost:5001`)      |
+| `Tracing`             | Optional Zipkin                                 | OpenTelemetry -> OTLP Collector                  |
+| `Ports`               | Exposed via `server.port` or IntelliJ config    | Mapped in `docker-compose.yml`
 
 ## Local Development
 
 Build the entire project:
 
 ```bash
-mvn clean install
+  mvn clean install
 ```
 
 Run any service individually:
 
 ```bash
-cd order-service
-mvn spring-boot:run
+  cd order-service
+  mvn spring-boot:run
 ```
+
+## Running with Docker Compose
+
+Start all services with ELK and OpenTelemetry collector:
+
+```bash
+  docker compose --env-file .env.docker -f docker-compose.yml up --build -d
+```
+Stop all services:
+```bash
+  docker compose down -v --remove-orphans   
+```
+
+> Note: Ensure Docker is running and ports mentioned in the docker-compose.yml are available.
+
 
 ## Observability
 
 - Access **Kibana**: [http://localhost:5601](http://localhost:5601)
 - Access **Swagger UI** (per service): `http://localhost:<PORT>/swagger-ui.html`
 - Logs are sent to Logstash via TCP (`port 5001`)
-- Traces are exported using OTLP to OpenTelemetry Collector
+- Traces are exported using OTLP to **OpenTelemetry** Collector
+- Access Eureka **Service Discovery**: http://localhost:8761
 
 ## Configurations
 
 - Central config repo: [config-files/](./config-files/)
 - Swagger/OpenAPI: enabled via SpringDoc in each service
-- OpenTelemetry Collector config: [otelcol/otel-collector-config.yml](./otelcol/otel-collector-config.yml)
+- OpenTelemetry Collector config: [otelcol/docker/otel-collector-config.yml](./otelcol/docker/otel-collector-config.yml)
+- Logstash config: [logstash/docker/](./logstash/docker/)
 
 ## Security
 

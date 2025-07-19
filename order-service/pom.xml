@@ -51,7 +51,7 @@
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 
-		<!-- In Spring Boot 3.x + Spring Cloud 2023.x, the bootstrap.yml is not loaded automatically by default anymore. Add this -->
+		<!-- In Spring Boot 3.x + Spring Cloud 2023.x, the bootstrap-local.yml is not loaded automatically by default anymore. Add this -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-bootstrap</artifactId>
@@ -80,20 +80,18 @@
 			<version>${spring.doc.verison}</version>
 		</dependency>
 
-		<!-- H2 or PostgreSQL -->
+		<!-- Database -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- Use this if connecting to PostgreSQL -->
-		<!--
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        -->
 
 		<!-- JWT -->
 		<dependency>
@@ -174,4 +172,21 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring.boot.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

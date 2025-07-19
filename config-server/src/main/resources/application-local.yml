@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///Users/deepaganesh/Projects/food-delivery-backend-cloud-native/config-files

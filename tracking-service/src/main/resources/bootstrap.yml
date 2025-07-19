@@ -1,5 +1,8 @@
 spring:
   application:
     name: tracking-service
-  config:
-    import: optional:configserver:http://localhost:8888
+
+# Optional: To see what's loaded from config-server
+logging:
+  level:
+    org.springframework.cloud.config: DEBUG

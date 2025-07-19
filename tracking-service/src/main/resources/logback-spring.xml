@@ -1,14 +1,77 @@
-<configuration>
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <!-- Enable Spring Boot profile support -->
+    <springProperty name="APP_NAME" source="spring.application.name" defaultValue="app" />
+
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
+    <!-- Encoder for structured JSON output -->
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>localhost:5001</destination> <!-- Logstash listens here -->
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <destination>logstash:5001</destination> <!-- Logstash port -->
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "log.level": "%level",
+                        "trace.id": "%X{traceId:-}",
+                        "span.id": "%X{spanId:-}",
+                        "thread": "%thread",
+                        "logger": "%logger",
+                        "message": "%message"
+                        }
+                    </pattern>
+                </pattern>
+                <stackTrace />
+            </providers>
+        </encoder>
     </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] traceId=%X{traceId} spanId=%X{spanId}%n %-5level %logger{36} - %msg
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- Optional: File appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/${APP_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/${APP_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "log.level": "%level",
+                        "trace.id": "%X{traceId:-}",
+                        "span.id": "%X{spanId:-}",
+                        "thread": "%thread",
+                        "logger": "%logger",
+                        "message": "%message"
+                        }
+                    </pattern>
+                </pattern>
+                <stackTrace />
+            </providers>
+        </encoder>
+    </appender>
+
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="LOGSTASH"/>
+        <!-- <appender-ref ref="FILE" /> -->
     </root>
 </configuration>

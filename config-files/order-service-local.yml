@@ -1,0 +1,55 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:fooddeliverydb # jdbc:postgresql://localhost:5432/ordersdb
+    driver: org.h2.Driver     # ord.postgresql.Driver
+    username: sa              # postgresql
+    password:                 # postgresql
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  kafka:
+    bootstrap-server: localhost:9092
+#  cache:                   # Ideal for Spring's Cache Abstraction (i.e. using annotations like @Cacheable, @CacheEvict, @CachePut, etc.).
+#    type: redis
+#      redis:
+#        time-to-live: 600
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 60000
+    lettuce:               # Having this will not require to write, Spring will autoconfigure lettuce factory (redis.mode = standalone-pool)
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 2
+        max-wait: 1000
+    sentinel:              # Having this will not require to write code, Spring will autoconfigure sentinel factory (redis.mode = sentinel)
+      master: mymaster     # Should match the name used in sentinel.conf
+      nodes: localhost:26379,localhost:26380,localhost:26381
+      password:
+
+redis:
+  ttl:
+    order: 600 # TTL in seconds (10 minutes)
+  mode: standalone
+
+jwt:
+  secret: my-secret-key
+  expirationMs: 86400000 # 24 hours in milliseconds
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+app:
+  rate:
+    limit:
+      request: 5
+      windowSeconds: 60

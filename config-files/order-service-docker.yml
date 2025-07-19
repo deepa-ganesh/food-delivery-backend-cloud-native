@@ -1,0 +1,44 @@
+### Spring specific properties ###
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    driver: org.postgresql.Driver
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  kafka:
+    bootstrap-server: ${KAFKA_BROKER}
+
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    timeout: 60000
+
+
+### Application specific properties ###
+
+app:
+  rate:
+    limit:
+      request: 5
+      windowSeconds: 60
+
+redis:
+  ttl:
+    order: 600 # TTL in seconds (10 minutes)
+  mode: standalone
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+
+jwt:
+  secret: my-secret-key
+  expirationMs: 86400000 # 24 hours in milliseconds
